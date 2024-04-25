@@ -17,6 +17,7 @@
     "@types/react-virtualized": "^9.21.21",
     "@web3-react/core": "^8.2.2",
     "@web3-react/metamask": "^8.2.0",
+    "@metamask/jazzicon": "^2.0.0",
     "@rainbow-me/rainbowkit": "^1.0.1",
     "ahooks": "^3.4.0",
     "animate.css": "^4.1.1",

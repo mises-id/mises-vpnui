@@ -13,7 +13,6 @@ import {
   AutoSizerProps,
   InfiniteLoaderProps,
 } from 'react-virtualized';
-import HistoryList from '../HistoryList';
 import CustomAvatar from '../CustomAvatar';
 import { useAccount, useDisconnect, useWalletClient } from 'wagmi';
 import detectEthereumProvider from '@metamask/detect-provider';
@@ -136,7 +135,6 @@ const ConnectWallet: FC<IProps> = (props) => {
             {address && <CustomAvatar address={address} size={24} />}
             <span className='ml-10 account-address'>{shortenAddress(address)}</span>
           </div>
-          <HistoryList visible={isOpen} onClose={()=>setisOpen(false)}/>
         </div>}
         {!address && <Button size='small' onClick={connect} shape='rounded' color='primary' className='connect-btn'>Connect</Button>}
       </div>

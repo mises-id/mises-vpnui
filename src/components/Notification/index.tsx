@@ -1,32 +1,19 @@
+import { VpnContext, notificationData } from '@/context/vpnContext'
+// import { useInterval } from 'ahooks'
 import React, { FC, useContext, useMemo } from 'react'
 import './index.less'
 import { Image } from 'antd-mobile'
 import { CloseOutline } from 'antd-mobile-icons'
+// import { substringAmount } from '@/utils'
 import FallBackImage from '../Fallback'
-
-export interface notificationData {
-  type: 'reverted' | 'success',
-  text: string,
-  hash: string,
-  toTokenAmount?: string,
-  fromTokenAmount?: string,
-  noticeType?: 'token' | 'normal',
-  description?: string | undefined,
-  icon?: () => JSX.Element,
-}
-
 interface IProps {
 }
-const Notification:FC<IProps> = ()=> {  
+const Notification:FC<IProps> = ()=> {
+  const vpnContext = useContext(VpnContext)
+  
   const list = useMemo(() => {
-    return swapContext?.notification || []
-  }, [swapContext?.notification])
-
-  // const swapText = (val: notificationData) =>{
-  //   const {toToken,fromToken,toTokenAmount,fromTokenAmount} = val
-  //   if(!toTokenAmount || !fromTokenAmount || !toToken) return fromToken?.symbol
-  //   return `${fromTokenAmount} ${fromToken?.symbol} for ${substringAmount(toTokenAmount)} ${toToken.symbol}`
-  // }
+    return vpnContext?.notification || []
+  }, [vpnContext?.notification])
 
   const FromToTokenIcon = (props: {
     from_token: token,
@@ -41,19 +28,13 @@ const Notification:FC<IProps> = ()=> {
       <Image width={28} height={28} src={props.to_token.logo_uri} className='from-to-icon' fallback={props.to_token?.symbol ? <FallBackImage width={28} height={28} symbol={props.to_token?.symbol} /> : ''} />
     </div>
   }
+
   return (
     <>
     {list?.map((val: notificationData, index: number) => {
       return <div className='absolute right-3 notification flex justify-between shadow-lg' style={{top: index * 100}} key={index}>
         <div className='flex gap-4 items-center'>
-          {val.noticeType !== 'normal' && val.fromToken ? <>
-          <FromToTokenIcon to_token={val.toToken} from_token={val.fromToken}/>
-          <div>
-            <p className='notification-title'>{val.text}</p>
-            {/* {val.fromTokenAmount &&<p className='notification-desc'>
-              {swapText(val)}
-            </p>} */}
-          </div></> : <>
+          {val.noticeType === 'normal' && <>
           <div style={{width: 50}}>{val?.icon?.()}</div>
           <div>
             <p className='notification-title'>{val.text}</p>
@@ -61,11 +42,11 @@ const Notification:FC<IProps> = ()=> {
               {val.description}
             </p>
           </div>
-          </>}
-          
+          </>
+          }
         </div>
         <CloseOutline className="cursor-pointer icon-color text-24" onClick={()=>{
-          swapContext?.removeNotificationData(index)
+          vpnContext?.removeNotificationData(index)
         }}/>
       </div>
     })}
