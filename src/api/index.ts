@@ -20,6 +20,7 @@ export interface accountData {
 
 // todo:?
 export interface configData {
+  priceInUsdt: number
 }
 
 export enum VpnStatus {
@@ -49,10 +50,15 @@ interface VpnInfo {
  * get config data
  */
 export async function fetchConfigData(): Promise<configData> {
-  const { data } = await request({
-    url: '/v1/vpn/config',
-  })
-  return data
+  try {
+    const { data } = await request({
+      url: '/v1/vpn/config',
+    })
+    return data
+  } catch (error) {
+    // todo:test default
+    return {priceInUsdt: 3.00}
+  }
 }
 
 /**

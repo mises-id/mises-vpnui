@@ -1,5 +1,7 @@
 import { BigNumberish, ethers } from "ethers";
 
+export const nativeTokenAddress = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+
 export const MBChainId = 42161;
 
 export const MBChainInfo = {

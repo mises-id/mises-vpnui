@@ -7,6 +7,7 @@ const InitPageProvider = ({ children }: PropsWithChildren<{}>) => {
   const { data: configData } = useRequest(fetchConfigData, {
     retryCount: 3
   })
+
   return (
     <PageValueProvider value={{
       configData
