@@ -130,31 +130,16 @@ export async function fetchOrderInfo(orderId: string | undefined): Promise<VpnOr
 }
 
 /**
- * fetch bonus count for user account
+ * create order
  */
-export async function fetchBonusCount(): Promise<{ "bonus": number }> {
+export async function createOrder(planId: number = 1): Promise<{orderId:string}> {
   const token = getToken('token');
-  if (!token) return Promise.reject()
+  if (!token) return Promise.reject("token error")
   const { data } = await request({
-    url: '/v1/mining/bonus',
-    headers: {
-      Authorization: `Bearer ${getToken('token')}`
-    }
-  })
-  return data
-}
-
-/**
- * redeem bonus count
- */
-export async function redeemBonusCount(bonus: number): Promise<boolean> {
-  const token = getToken('token');
-  if (!token) return Promise.reject()
-  const { data } = await request({
-    url: '/v1/mining/redeem_bonus',
-    method: 'post',
+    url: `/v1/vpn/order/create`,
+    method: "POST",
     data: {
-      bonus
+      planId
     },
     headers: {
       Authorization: `Bearer ${getToken('token')}`
@@ -162,66 +147,3 @@ export async function redeemBonusCount(bonus: number): Promise<boolean> {
   })
   return data
 }
-
-export interface checkMBairdropData {
-  "misesid": string,
-  "total_airdrop_limit": number,
-  "current_airdrop_limit": number,
-  "current_airdrop": number
-}
-
-/**
- * check mises account
- */
-export async function checkMisesAccount(misesid: string): Promise<checkMBairdropData> {
-  const token = getToken('mises-token');
-  if (!token) return Promise.reject()
-  const { data } = await request({
-    url: `/v1/mb_airdrop/user/${misesid}`,
-    headers: {
-      Authorization: `Bearer ${getToken('mises-token')}`
-    }
-  })
-  // data.current_airdrop_limit = data.total_airdrop_limit
-  return data
-}
-
-export interface paramsData {
-  receive_address: string,
-  tx_hash?: string,
-}
-/**
- * claim $MB
- */
-export async function claimAirdrop(params: paramsData): Promise<void> {
-  const token = getToken('mises-token');
-  if (!token) return Promise.reject()
-  const { data } = await request({
-    url: `/v1/mb_airdrop/claim`,
-    params,
-    headers: {
-      Authorization: `Bearer ${getToken('mises-token')}`
-    }
-  })
-  return data
-}
-
-/**
- * fetch data for me
- */
-export async function reportAds(requestData: {
-  ad_type: 'admob'
-}): Promise<void> {
-  const token = getToken('token');
-  if (!token) return Promise.reject()
-  const { data } = await request({
-    url: `/v1/ad_mining/log`,
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${getToken('token')}`
-    },
-    data: requestData
-  })
-  return data
-}
-

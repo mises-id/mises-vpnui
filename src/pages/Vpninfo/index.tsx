@@ -36,13 +36,13 @@ function Vpninfo() {
 
   // todo:test
   const currentAccount = useMemo(() => {
-    return "0x3836f698D4e7d7249cCC3291d9ccd608Ee718988";
+    // return "0x3836f698D4e7d7249cCC3291d9ccd608Ee718988";
 
-    // if (accounts?.length) {
-    //   return accounts[0]
-    // }
-    // const connectAddress = localStorage.getItem('ethAccount')
-    // return connectAddress || authAccount || ''
+    if (accounts?.length) {
+      return accounts[0]
+    }
+    const connectAddress = localStorage.getItem('ethAccount')
+    return connectAddress || authAccount || ''
   }, [accounts, authAccount])
 
 
@@ -51,7 +51,6 @@ function Vpninfo() {
   const signMsg = async () => {
     try {
       const timestamp = new Date().getTime();
-      console.log(accounts, 'accounts')
       if (accounts && accounts.length) {
         const address = accounts[0]
         const nonce = `${timestamp}`;
@@ -107,7 +106,6 @@ function Vpninfo() {
           misesId: accounts[0]
         })
       }).catch(error => {
-        console.log(error, 'error')
         if(error && error.message) {
           Toast.show(error.message)
         }
@@ -118,7 +116,7 @@ function Vpninfo() {
   // attempt to connect eagerly on mount
   useEffect(() => {
     metaMask.connectEagerly().catch(() => {
-      console.debug('Failed to connect eagerly to metamask')
+      // console.log('Failed to connect eagerly to metamask')
     })
     const token = getToken()
     if(token) {
@@ -126,12 +124,9 @@ function Vpninfo() {
     }
   }, [])
 
-  
-
   const documentVisibility = useDocumentVisibility();
 
   useEffect(() => {
-    console.log(`Current document visibility state: ${documentVisibility}`);
     if (documentVisibility === 'visible') {
       loginMises()
     }
@@ -142,20 +137,18 @@ function Vpninfo() {
       }
       setloading(true)
       window.misesEthereum?.getCachedAuth?.().then(res => {
-        console.log('getCachedAuth')
         const token = getToken()
         const oldConnectAddress = localStorage.getItem('ethAccount')
         !token && loginMisesAccount(res)
         res.misesId !== oldConnectAddress && token && loginMisesAccount(res)
       }).catch(err => {
-        console.log(err, 'getCachedAuth: error')
+        console.log('getCachedAuth error:', err)
         setauthAccount('')
         removeToken('token')
         localStorage.removeItem('ethAccount')
         setloading(false)
       })
     }
-    console.log(accounts, 'accounts')
     // eslint-disable-next-line
   }, [documentVisibility, accounts]);
 
@@ -193,17 +186,6 @@ function Vpninfo() {
     setAdsLoadingFalse()
     window.misesEthereum?.cancelAds?.()
   }
-
-  // const RenderView = () => {
-  //   if (currentAccount) {
-
-  //   // console.log("currentAccount: ", currentAccount)
-  //   // console.log("token: ", getToken())
-
-  //     return <VpnView/>
-  //   }
-  //   return null
-  // }
   
   // todo:test let
   let {data: vpnData, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {

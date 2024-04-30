@@ -21,9 +21,10 @@ import { chainList } from '@/App';
 import Notification from "@/components/Notification";
 import VpnProvider from '@/context/vpnContext';
 import { getBalance } from '@/api/ether';
-import { formatAmount } from "@/utils";
+import { formatAmount, getToken } from "@/utils";
 import BigNumber from 'bignumber.js';
-import { v4 as uuidv4 } from 'uuid';
+import { useRequest } from 'ahooks';
+import { createOrder, signin } from '@/api';
 
 const contractABI = [
   {
@@ -182,7 +183,6 @@ function Purchase() {
   const { isShowLayout, isMaxRetryStatus, getProvider } = useShowLayout()
   useEffect(() => {
     const load = () => {
-      console.log('getProvider loading')
       getProvider()
     }
     if (document.readyState === "complete") {
@@ -242,20 +242,28 @@ function Purchase() {
     const { chain } = useNetwork()
     const chainId = chain?.id  || 1
     const { configData } = usePageValue()
-    
+    const { runAsync: runCreateOrder } = useRequest(createOrder, {
+      retryCount: 3,
+      manual: true,
+      throttleWait: 1000
+    })
 
     if(configData === undefined){
       return null
     }
 
     const onButtonClick = async () => {
-      if(!(chainId in PurchaseConfigOnChain)){
-        console.log("chain error:", chainId)
+      if(!address){
+        openConnectModal?.()
         return
       }
 
-      if(!address){
-        openConnectModal?.()
+      if(!(chainId in PurchaseConfigOnChain)){
+        Toast.show({
+          content: "This chain is not supported",
+          maskClickable: false,
+          duration: 2000
+        })
         return
       }
 
@@ -284,7 +292,11 @@ function Purchase() {
             // check chain
             const currentChain = chainList.find(val=>val.id === chainId)
             if(currentChain === undefined){
-              console.log("chain not found in config:", chainId)
+              Toast.show({
+                content: "chain error",
+                maskClickable: false,
+                duration: 2000
+              })
               return
             }
 
@@ -298,6 +310,7 @@ function Purchase() {
                 maskClickable: false,
                 duration: 3000
               })
+              setButtonLoading(false)
               return
             }
             
@@ -331,7 +344,7 @@ function Purchase() {
             setPurchaseStatus(2)
           } catch (error) {
             setButtonLoading(false)
-            console.log("allowance error:", error)
+            // console.log("allowance error:", error)
             Toast.show({
               content: "allowance error",
               maskClickable: false,
@@ -351,14 +364,24 @@ function Purchase() {
             // check chain
             const currentChain = chainList.find(val=>val.id === chainId)
             if(currentChain === undefined){
-              console.log("chain not found in config:", chainId)
+              Toast.show({
+                content: "chain error",
+                maskClickable: false,
+                duration: 2000
+              })
               return
             }
 
             setButtonLoading(true)
 
             // pay
-            const uniqueKey = uuidv4();
+            let orderId = ""
+            const orderInfo = await runCreateOrder()
+            if(orderInfo.orderId !== ""){
+              orderId = orderInfo.orderId
+            }else{
+              throw new Error("empty order id")
+            }
             const { request } = await prepareWriteContract({
               address: PurchaseConfigOnChain[chainId].contractAddress,
               abi: contractABI,
@@ -366,7 +389,7 @@ function Purchase() {
               args: [
                 PurchaseConfigOnChain[chainId].tokenAddress,
                 BigInt(configData.priceInUsdt * 10 ** 18),
-                uniqueKey
+                orderId
               ],
               chainId: chainId,
             });
@@ -377,6 +400,7 @@ function Purchase() {
             setButtonLoading(false)
             setButtonText("Done")
             setPurchaseStatus(999)
+
           }catch(error){
             setButtonLoading(false)
             console.log("pay error:", error)
@@ -391,8 +415,6 @@ function Purchase() {
         setButtonDisabled(false);
         return
       }
-
-      
 
     }
 

@@ -1,10 +1,10 @@
 import { AuthenticationStatus, Chain } from '@rainbow-me/rainbowkit';
-import { Button } from 'antd-mobile'
-import { FC, useContext, useEffect, useState } from 'react'
+import { Button } from 'antd-mobile';
+import { FC, useContext, useEffect, useState } from 'react';
 import ChainList from '../ChainList';
+import CurrentAccountInfo from '../CurrentAccountInfo';
 import { isRequest, shortenAddress } from '@/utils';
-import './index.less'
-
+import './index.less';
 import {
   AutoSizer as _AutoSizer,
   List as _List,
@@ -135,6 +135,7 @@ const ConnectWallet: FC<IProps> = (props) => {
             {address && <CustomAvatar address={address} size={24} />}
             <span className='ml-10 account-address'>{shortenAddress(address)}</span>
           </div>
+          <CurrentAccountInfo visible={isOpen} onClose={()=>setisOpen(false)}/>
         </div>}
         {!address && <Button size='small' onClick={connect} shape='rounded' color='primary' className='connect-btn'>Connect</Button>}
       </div>
