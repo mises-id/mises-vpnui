@@ -329,6 +329,9 @@ function Purchase() {
               args: [address, PurchaseConfigOnChain[chainId].contractAddress],
               chainId: chainId,
             });
+
+            console.log("allowance data:", data)
+
             if(BigNumber(formatAmount(data.toString(), 18)).lt(configData.priceInUsdt)){
               // approve allowance
               const { request } = await prepareWriteContract({
