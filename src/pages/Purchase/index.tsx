@@ -322,7 +322,7 @@ function Purchase() {
             }
             
             // check allowance
-            const data = await readContract({
+            const data: bigint = await readContract({
               address: PurchaseConfigOnChain[chainId].tokenAddress,
               abi: erc20ABI,
               functionName: 'allowance',
