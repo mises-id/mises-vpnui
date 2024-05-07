@@ -34,9 +34,6 @@ function Vpninfo() {
     return connectAddress || authAccount || ''
   }, [accounts, authAccount])
 
-
-  // const [signLoading, { setTrue: setsignLoadingTrue, setFalse: setsignLoadingFalse }] = useBoolean(true)
-
   const signMsg = async () => {
     try {
       const timestamp = new Date().getTime();
