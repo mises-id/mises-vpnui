@@ -352,7 +352,7 @@ function Purchase() {
             setPurchaseStatus(2)
           } catch (error) {
             setButtonLoading(false)
-            // console.log("allowance error:", error)
+            console.log("allowance error:", error)
             Toast.show({
               content: "allowance error",
               maskClickable: false,
