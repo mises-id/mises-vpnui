@@ -1,6 +1,5 @@
 import { Timeout } from "ahooks/lib/useRequest/src/types";
-import { Dispatch, FC, ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
-import { useWalletClient } from "wagmi";
+import { Dispatch, FC, ReactNode, SetStateAction, createContext, useState } from "react";
 
 interface transferTokenData {
   tokenAddress: string,
@@ -57,8 +56,6 @@ const VpnProvider: FC<Iprops> = ({ children }) => {
   const [notification, setNotification] = useState<notificationData[]>([])
 
   const [timeout, settimeout] = useState<Timeout | undefined>()
-
-  const [tokens, settokens] = useState<token[] | undefined>(undefined)
 
   const createRemoveTask = () =>{
     const timeoutFn = setTimeout(removeNotificationData, 4000);

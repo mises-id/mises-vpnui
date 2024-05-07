@@ -1,7 +1,7 @@
 import { shortenAddress } from '@/utils';
 import { CenterPopup, CenterPopupProps, Toast } from 'antd-mobile';
-import { FC, useMemo, useRef, useState } from 'react';
-import { useAccount, useDisconnect, useNetwork } from 'wagmi';
+import { FC } from 'react';
+import { useAccount, useDisconnect } from 'wagmi';
 import CustomAvatar from '../CustomAvatar'
 import './index.less'
 

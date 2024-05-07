@@ -1,5 +1,5 @@
 import './index.less';
-import { AutoCenter, DotLoading, Card, Toast } from 'antd-mobile';
+import { DotLoading, Card, Toast } from 'antd-mobile';
 import { hooks } from '@/components/Web3Provider/metamask';
 import { useMemo } from 'react';
 import { shortenAddress } from '@/utils';
@@ -13,48 +13,47 @@ const Orders = () => {
     const accounts = useAccounts()
 
     const currentAccount = useMemo(() => {
-        return "0x3836f698D4e7d7249cCC3291d9ccd608Ee718988";
-        // if (accounts?.length) {
-        //   return accounts[0]
-        // }
-        // const connectAddress = localStorage.getItem('ethAccount')
-        // return connectAddress || ''
+        // return "0x3836f698D4e7d7249cCC3291d9ccd608Ee718988";
+        if (accounts?.length) {
+          return accounts[0]
+        }
+        const connectAddress = localStorage.getItem('ethAccount')
+        return connectAddress || ''
     }, [accounts])
 
-    // todo:test
-    let {data, error, loading: fetchOrdersLoading} = useRequest(fetchOrders, {
+    const {data, error, loading: fetchOrdersLoading} = useRequest(fetchOrders, {
         pollingInterval: 15000
     })
 
-    data = [
-        {
-          orderId: "cvcvcvcvcvcvcv",
-          status: "pending",
-          amount: 3,
-          chain: "tron",
-          token: "usdt",
-          txnHash: "",
-          createTime: "2024/04/30"
-        },
-        {
-          orderId: "cvcvcvcvcvcvcv",
-          status: "pending",
-          amount: 3,
-          chain: "tron",
-          token: "usdt",
-          txnHash: "",
-          createTime: "2024/04/30"
-        },
-        {
-          orderId: "cvcvcvcvcvcvcv",
-          status: "pending",
-          amount: 3,
-          chain: "tron",
-          token: "usdt",
-          txnHash: "",
-          createTime: "2024/04/30"
-        }
-    ]
+    // data = [
+    //     {
+    //       orderId: "cvcvcvcvcvcvcv",
+    //       status: "pending",
+    //       amount: 3,
+    //       chain: "tron",
+    //       token: "usdt",
+    //       txnHash: "",
+    //       createTime: "2024/04/30"
+    //     },
+    //     {
+    //       orderId: "cvcvcvcvcvcvcv",
+    //       status: "pending",
+    //       amount: 3,
+    //       chain: "tron",
+    //       token: "usdt",
+    //       txnHash: "",
+    //       createTime: "2024/04/30"
+    //     },
+    //     {
+    //       orderId: "cvcvcvcvcvcvcv",
+    //       status: "pending",
+    //       amount: 3,
+    //       chain: "tron",
+    //       token: "usdt",
+    //       txnHash: "",
+    //       createTime: "2024/04/30"
+    //     }
+    // ]
     // fetchOrdersLoading = true
     // error = new Error("network error")
 

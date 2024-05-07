@@ -21,10 +21,11 @@ import { chainList } from '@/App';
 import Notification from "@/components/Notification";
 import VpnProvider from '@/context/vpnContext';
 import { getBalance } from '@/api/ether';
-import { formatAmount, getToken } from "@/utils";
+import { formatAmount } from "@/utils";
 import BigNumber from 'bignumber.js';
 import { useRequest } from 'ahooks';
-import { createOrder, signin } from '@/api';
+import { createOrder, updateOrder } from '@/api';
+import { useNavigate } from 'react-router-dom';
 
 const contractABI = [
   {
@@ -242,8 +243,14 @@ function Purchase() {
     const { chain } = useNetwork()
     const chainId = chain?.id  || 1
     const { configData } = usePageValue()
+    const navigate = useNavigate()
     const { runAsync: runCreateOrder } = useRequest(createOrder, {
-      retryCount: 3,
+      retryCount: 2,
+      manual: true,
+      throttleWait: 1000
+    })
+    const { runAsync: runUpdateOrder } = useRequest(updateOrder, {
+      retryCount: 2,
       manual: true,
       throttleWait: 1000
     })
@@ -334,8 +341,9 @@ function Purchase() {
                 ],
                 chainId: chainId,
               });
-              const { hash } = await writeContract(request);
-              console.log(`Approve Transaction hash: ${hash}`);
+              await writeContract(request);
+              // const { hash } = await writeContract(request);
+              // console.log(`Approve Transaction hash: ${hash}`);
             }
 
             // update button status
@@ -376,7 +384,7 @@ function Purchase() {
 
             // pay
             let orderId = ""
-            const orderInfo = await runCreateOrder()
+            const orderInfo = await runCreateOrder(chainId)
             if(orderInfo.orderId !== ""){
               orderId = orderInfo.orderId
             }else{
@@ -393,8 +401,20 @@ function Purchase() {
               ],
               chainId: chainId,
             });
+
+            console.log("request:", request)
+
             const { hash } = await writeContract(request);
             console.log(`Pay Transaction hash: ${hash}`);
+
+            try{
+              const ret = await runUpdateOrder(orderId, `${hash}`);
+              if(!ret){
+                console.log(`fail to updateOrder, orderId:${orderId}, hash:${hash}`)
+              }
+            } catch(error) {
+              console.log(`runUpdateOrder orderId:${orderId}, hash:${hash} error:`, error)
+            }
 
             // update button status
             setButtonLoading(false)
@@ -420,7 +440,7 @@ function Purchase() {
 
     return <>
     <div className='flex justify-between'>
-      <p className='p-20 text-16 m-0'><span className='font-bold text-[#5d61ff]'>Mises VPN</span></p>
+      <p className='p-20 text-16 m-0' onClick={()=>navigate('/vpn/info')}><span className='font-bold text-[#5d61ff]'>Mises VPN</span></p>
       <ConnectButton.Custom>
         {(props) => {
           const ready = props.mounted;

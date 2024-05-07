@@ -1,23 +1,6 @@
 import request from '@/utils/request'
 import { getToken } from '@/utils'
 
-// todo:tmp
-export interface accountData {
-  "bonus": {
-    "bonus_to_mb_rate": number,
-    'min_redeem_bonus_amount': number,
-  },
-  "ad_mining": {
-    "limit_per_day": number
-  },
-  "mb_airdrop": {
-    "min_redeem_mis_amount": number
-    "mis_redeem_mb_fee": number
-    "mis_redeem_receiver_misesid": string
-    "mis_redeem_status": number
-  }
-}
-
 // todo:?
 export interface configData {
   priceInUsdt: number
@@ -132,13 +115,14 @@ export async function fetchOrderInfo(orderId: string | undefined): Promise<VpnOr
 /**
  * create order
  */
-export async function createOrder(planId: number = 1): Promise<{orderId:string}> {
+export async function createOrder(chainId: number, planId: number = 1): Promise<{orderId:string}> {
   const token = getToken('token');
   if (!token) return Promise.reject("token error")
   const { data } = await request({
     url: `/v1/vpn/order/create`,
     method: "POST",
     data: {
+      chainId,
       planId
     },
     headers: {
@@ -146,4 +130,30 @@ export async function createOrder(planId: number = 1): Promise<{orderId:string}>
     }
   })
   return data
+}
+
+/**
+ * update order hash
+ */
+export async function updateOrder(orderId: string, txnHash: string): Promise<boolean> {
+  const token = getToken('token');
+  if (!token) return Promise.reject("token error")
+  if(txnHash === "") {
+    return Promise.reject("hash error")
+  }
+  const { data } = await request({
+    url: `/v1/vpn/order/update`,
+    method: "PATCH",
+    data: {
+      orderId,
+      txnHash
+    },
+    headers: {
+      Authorization: `Bearer ${getToken('token')}`
+    }
+  })
+  if(data?.status === true){
+    return true
+  }
+  return false
 }

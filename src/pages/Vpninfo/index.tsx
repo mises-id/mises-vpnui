@@ -1,20 +1,14 @@
 import { VpnStatus, signin, fetchVpnInfo } from '@/api';
-import { usePageValue } from '@/components/pageProvider';
-import VpnIndex from '@/components/VpnIndex';
-import VpnPay from '@/components/VpnPay';
 import VpnOrders from '@/components/VpnOrders';
-import { getSwapLink, getToken, removeToken, setToken, shortenAddress } from '@/utils';
-import { useBoolean, useDocumentVisibility, useRequest } from 'ahooks';
-import { Button, CenterPopup, Image, Toast, DotLoading, AutoCenter, Card } from 'antd-mobile'
-import React, { useEffect, useMemo, useState } from 'react'
-import { useAnalytics } from "@/hooks/useAnalytics";
+import { getToken, removeToken, setToken, shortenAddress } from '@/utils';
+import { useDocumentVisibility, useRequest } from 'ahooks';
+import { Button, Toast, DotLoading, AutoCenter, Card } from 'antd-mobile';
+import { useEffect, useMemo, useState } from 'react';
 
 import { hooks, metaMask } from '@/components/Web3Provider/metamask'
 import { useWeb3React } from '@web3-react/core';
 import './index.less';
-import { logEvent } from 'firebase/analytics';
 import DownloadPop from '@/components/DownloadPop';
-import { SendOutline } from 'antd-mobile-icons';
 import { useNavigate } from "react-router-dom";
 
 const { useAccounts, useIsActivating } = hooks
@@ -25,11 +19,6 @@ function Vpninfo() {
   const isActivating = useIsActivating()
   const { connector } = useWeb3React();
 
-
-  // const provider = useProvider()
-  const [adsLoading, { setTrue: setAdsLoadingTrue, setFalse: setAdsLoadingFalse }] = useBoolean(false)
-  const [showCenterPop, setshowCenterPop] = useState(false)
-  const [continuePop, setcontinuePop] = useState(false)
   const [downloadPop, setDownloadPop] = useState(false)
   const [authAccount, setauthAccount] = useState('')
   const [loading, setloading] = useState(true)
@@ -167,11 +156,6 @@ function Vpninfo() {
     }
   }
 
-  const analytics = useAnalytics()
-
-  // todo: 读取全局vpn配置信息
-  // const { accountData } = usePageValue()
-
   const buttonText = useMemo(() => {
     if (isActivating) {
       return 'Connect Wallet...'
@@ -180,15 +164,9 @@ function Vpninfo() {
     return 'Connect Mises ID'
     //
   }, [isActivating])
-
-  const pendingPopClose = () => {
-    setshowCenterPop(false);
-    setAdsLoadingFalse()
-    window.misesEthereum?.cancelAds?.()
-  }
   
   // todo:test let
-  let {data: vpnData, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
+  const {data: vpnData, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
     if(!currentAccount){
       return Promise.reject('please login')
     }

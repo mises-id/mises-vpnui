@@ -66,7 +66,7 @@ const ConnectWallet: FC<IProps> = (props) => {
   useEffect(() => {
     if(isConnected && walletClient.isIdle){
       disconnect()
-      console.log('disconnect')
+      // console.log('disconnect')
     }
     // eslint-disable-next-line
   }, [])
