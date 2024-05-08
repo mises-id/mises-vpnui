@@ -79,3 +79,35 @@ request.interceptors.response.use((response: AxiosResponse) => {
 }, errorHandler);
 
 export default request;
+
+// 强制走prod
+const prodBaseURL = 'https://api.alb.mises.site/api'
+const requestProd = axios.create({
+  headers: { 'Content-Type': 'application/json' },
+  baseURL: prodBaseURL,
+  timeout: 50000,
+});
+
+// 添加请求拦截器
+requestProd.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    if(!config.headers) config.headers = {};
+    return config;
+  },
+  function (error:any) {
+
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  },
+);
+
+// 添加响应拦截器
+requestProd.interceptors.response.use((response: AxiosResponse) => {
+  const { data } = response;
+  if (data.code === 0) return data;
+  
+  Toast.show(data.msg);
+  return Promise.reject(data.data);
+}, errorHandler);
+
+export { requestProd };
