@@ -21,8 +21,8 @@ const DownloadPop:FC<IProps> = ({
         <div className='py-30 px-10'>
           <div className='flex justify-center'>
             <div className='relative'>
-              <Image width={120} src='./images/download.svg' fallback="" />
-              <Image width={30} src='./logo.png' fallback="" className='absolute top-53 left-25 rounded-full'/>
+              <Image width={120} src='../images/download.svg' fallback="" />
+              <Image width={30} src='../logo.png' fallback="" className='absolute top-53 left-25 rounded-full'/>
             </div>
           </div>
           <p className='text-16 text-gray-600 text-center mt-20 leading-8'>
@@ -48,8 +48,8 @@ const DownloadPop:FC<IProps> = ({
         <div className='py-30 px-10'>
           <div className='flex justify-center'>
             <div className='relative'>
-              <Image width={120} src='./images/download.svg' fallback="" />
-              <Image width={30} src='./logo.png' fallback="" className='absolute top-53 left-25 rounded-full'/>
+              <Image width={120} src='../images/download.svg' fallback="" />
+              <Image width={30} src='../logo.png' fallback="" className='absolute top-53 left-25 rounded-full'/>
             </div>
           </div>
           <p className='text-16 text-gray-600 text-center mt-20 leading-8'>

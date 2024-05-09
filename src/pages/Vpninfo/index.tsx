@@ -324,7 +324,7 @@ function Vpninfo() {
       {!currentAccount && !loading ? <>
         <p className='p-20 text-16 m-0 font-bold text-[#5d61ff] fixed inset-x-0 top-0'>Mises VPN</p>
         <div style={{ minHeight: 160 }}>
-          <img src="./images/me-bg.png" alt="bg" width="100%" className="block" />
+          <img src="../images/me-bg.png" alt="bg" width="100%" className="block" />
         </div>
         <div className='bg-white px-15 pb-30'>
           <p className='text-25 text-[#333333]'>About Mises ID</p>
