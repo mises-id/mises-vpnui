@@ -175,7 +175,7 @@ function Vpninfo() {
   useEffect(() => {
     if (fetchVpnInfoError) {
         console.log("fetchVpnInfo:", fetchVpnInfoError);
-        Toast.show("network error");
+        // Toast.show("network error");
     }
   }, [fetchVpnInfoError]);
 
