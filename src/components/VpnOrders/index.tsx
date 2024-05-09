@@ -16,7 +16,7 @@ const VpnOrders:FC<{orders: VpnOrder[] | undefined}> = ({orders}) => {
             Orders
             </div>
             <div>
-            <Link to={`/vpn/orders`}>more</Link>
+            {orders.length > 5 && <Link to={`/vpn/orders`}>more</Link>}
             </div>
             </>
           }
@@ -35,14 +35,19 @@ const VpnOrders:FC<{orders: VpnOrder[] | undefined}> = ({orders}) => {
                 </thead>
                 <tbody>
                   {
-                    orders.map((object, i) => 
+                    orders.map((object, i) => {
+                      if(i < 5){ 
+                      return (
                         <tr key={i}>
                         <td><Link to={`/vpn/order/${object.orderId}`}>{object.orderId}</Link></td>
                         <td>{object.status}</td>
                         <td>{object.amount} {object.token}</td>
                         <td>{object.createTime}</td>
                         </tr>
-                    )
+                      )}else{
+                        return null
+                      }
+                    })
                   }
                 </tbody>
             </table>

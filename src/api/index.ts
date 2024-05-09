@@ -14,7 +14,7 @@ export enum VpnStatus {
 export interface VpnOrder {
   orderId: string,
   status: string,
-  amount: number,
+  amount: string,
   chain: string,
   token: string
   txnHash: string,
