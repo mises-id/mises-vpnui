@@ -174,7 +174,8 @@ const PurchaseConfigOnChain: {[key:number]:{tokenAddress:address, contractAddres
   // bsc testnet
   97: {
     // usdt
-    tokenAddress: '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
+    // tokenAddress: '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
+    tokenAddress: '0x7ce794304CBc54c3DeeA8Afa175F5B2458dDE460',
     // receiver contract
     contractAddress: '0xc41Bfd2df09190C7416f21369aF61bE270128Dcb',
   },
