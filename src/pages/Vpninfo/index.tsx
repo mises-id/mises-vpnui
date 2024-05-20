@@ -1,7 +1,7 @@
 import { VpnStatus, signin, fetchVpnInfo } from '@/api';
 import VpnOrders from '@/components/VpnOrders';
 import { getToken, removeToken, setToken, shortenAddress } from '@/utils';
-import { useDocumentVisibility, useRequest } from 'ahooks';
+import { useDocumentVisibility, useRequest, useMount } from 'ahooks';
 import { Button, Toast, DotLoading, AutoCenter, Card } from 'antd-mobile';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -22,6 +22,21 @@ function Vpninfo() {
   const [downloadPop, setDownloadPop] = useState(false)
   const [authAccount, setauthAccount] = useState('')
   const [loading, setloading] = useState(true)
+
+  useMount(() => {
+    const provider = (window as any).misesEthereum;
+    if(provider) {
+      provider.getCachedAuth?.().then((res: {auth: string}) => {
+        console.log('getCachedAuth')
+        signin(res.auth).then(data => {
+          localStorage.setItem('token', data.token);
+        });
+      }).catch(() => {
+        console.log('getRemoved')
+        localStorage.removeItem('token');
+      })
+    }
+  });
 
   // todo:test
   const currentAccount = useMemo(() => {
