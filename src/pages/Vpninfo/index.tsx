@@ -22,6 +22,8 @@ function Vpninfo() {
   const [downloadPop, setDownloadPop] = useState(false)
   const [authAccount, setauthAccount] = useState('')
   const [loading, setloading] = useState(true)
+  const [vpnLoading, setVpnLoading] = useState(false)
+  const [vpnButtonDisabled, setVpnButtonDisabled] = useState(false)
 
   useMount(() => {
     const provider = (window as any).misesEthereum;
@@ -231,7 +233,29 @@ function Vpninfo() {
   //   ]
   // }
 
-  const RenderView = (props:{currentAccount:string, vpnData:any, fetchVpnInfoError: Error | undefined, fetchVpnInfoLoading:boolean}) => {
+  const startVpn = async () => {
+    const token = getToken()
+    if (!token) return
+    try {
+      console.log("start vpn")
+      setVpnLoading(true)
+      setVpnButtonDisabled(true)
+      await window.misesEthereum?.openVpn?.()
+      setVpnLoading(false)
+      setVpnButtonDisabled(false)
+    } catch (error: any) {
+      console.log("start vpn error:", error)
+      if (error.code < 100) {
+        if(error && error.message) {
+          Toast.show(error.message)
+        }
+      }
+      setVpnLoading(false)
+      setVpnButtonDisabled(false)
+    }
+  }
+
+  const RenderView = (props:{currentAccount:string, vpnData:any, fetchVpnInfoError: Error | undefined, fetchVpnInfoLoading:boolean, vpnLoading:boolean, vpnButtonDisabled:boolean}) => {
       if(VpnStatus.Available === props.vpnData?.status){
         return <>
         <div className='flex justify-between'>
@@ -266,11 +290,11 @@ function Vpninfo() {
             <Button
               className='vpn-button'
               color='primary'
-              onClick={() => {
-                Toast.show('Start VPN')
-              }}
+              onClick={startVpn}
+              disabled={props.vpnButtonDisabled}
             >
-              Start VPN
+              {props.vpnLoading && <DotLoading color='currentColor' />}
+              {!props.vpnLoading && `Start VPN`}
             </Button>
           </div>
         </Card>
@@ -335,7 +359,7 @@ function Vpninfo() {
 
   return (
     <div className={`h-screen  flex flex-col`}>
-      {currentAccount && <RenderView currentAccount={currentAccount} vpnData={vpnData} fetchVpnInfoError={fetchVpnInfoError} fetchVpnInfoLoading={fetchVpnInfoLoading}/>}
+      {currentAccount && <RenderView currentAccount={currentAccount} vpnData={vpnData} fetchVpnInfoError={fetchVpnInfoError} fetchVpnInfoLoading={fetchVpnInfoLoading} vpnLoading={vpnLoading} vpnButtonDisabled={vpnButtonDisabled}/>}
       {!currentAccount && !loading ? <>
         <p className='p-20 text-16 m-0 font-bold text-[#5d61ff] fixed inset-x-0 top-0'>Mises VPN</p>
         <div style={{ minHeight: 160 }}>
