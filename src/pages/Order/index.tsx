@@ -1,5 +1,5 @@
 import './index.less';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { hooks } from '@/components/Web3Provider/metamask';
 import { useMemo } from 'react';
 import { shortenAddress } from '@/utils';
@@ -12,6 +12,8 @@ const { useAccounts } = hooks
 const Order = () => {
     const { orderId }  = useParams<string>()
     const accounts = useAccounts()
+    const navigate = useNavigate()
+
     const currentAccount = useMemo(() => {
         // return "0x3836f698D4e7d7249cCC3291d9ccd608Ee718988";
         if (accounts?.length) {
@@ -48,7 +50,7 @@ const Order = () => {
 
     return <>
     <div className='flex justify-between'>
-        <p className='p-20 text-16 m-0'><span className='font-bold text-[#5d61ff]'>Mises VPN</span></p>
+        <p className='p-20 text-16 m-0' onClick={()=>navigate('/vpn/info')}><span className='font-bold text-[#5d61ff]'>Mises VPN</span></p>
         {currentAccount && <div className='flex items-center mr-15'>
         <div className='rounded-2xl p-10 bg-white dark:bg-[#131a2a]'>
             {shortenAddress(currentAccount)}

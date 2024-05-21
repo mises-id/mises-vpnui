@@ -288,6 +288,7 @@ function Purchase() {
           maskClickable: false,
           duration: 3000
         })
+        navigate('/vpn/info')
         return
       }
 
