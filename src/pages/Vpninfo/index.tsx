@@ -183,15 +183,15 @@ function Vpninfo() {
   // todo:test let
   const {data: vpnData, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
     if(!currentAccount){
-      if (vpnInitLoading) {
-        setVpnInitLoading(false)
-      }
+      // if (vpnInitLoading) {
+      //   setVpnInitLoading(false)
+      // }
       return Promise.reject('please login')
     }
-    const ret =  fetchVpnInfo()
-    if (vpnInitLoading) {
-      setVpnInitLoading(false)
-    }
+    const ret = fetchVpnInfo()
+    // if (vpnInitLoading) {
+    //   setVpnInitLoading(false)
+    // }
     return ret
   }, {
     pollingInterval: 15000
@@ -203,6 +203,12 @@ function Vpninfo() {
         // Toast.show("network error");
     }
   }, [fetchVpnInfoError]);
+
+  useEffect(() => {
+    if (!fetchVpnInfoLoading && vpnInitLoading) {
+        setVpnInitLoading(false)
+    }
+  }, [fetchVpnInfoLoading, vpnInitLoading]);
 
   // todo:test
   // vpnData = {
@@ -323,7 +329,7 @@ function Vpninfo() {
           </div>}
         </div>
         {vpnInitLoading && <AutoCenter><DotLoading color='currentColor' /></AutoCenter>}
-        {!vpnInitLoading && !fetchVpnInfoLoading && <>
+        {!vpnInitLoading && <>
         <AutoCenter className='text-18 mb-20 font-bold text-[#5d61ff]'>Plans</AutoCenter>
         <div className='px-15'>
         <Card 
