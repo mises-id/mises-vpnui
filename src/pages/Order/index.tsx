@@ -48,6 +48,8 @@ const Order = () => {
     //     createTime: '2024/04/30'
     // }
 
+    console.log("here")
+
     return <>
     <div className='flex justify-between'>
         <p className='p-20 text-16 m-0' onClick={()=>navigate('/vpn/info')}><span className='font-bold text-[#5d61ff]'>Mises VPN</span></p>
