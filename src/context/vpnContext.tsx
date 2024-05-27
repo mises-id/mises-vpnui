@@ -51,7 +51,8 @@ const VpnProvider: FC<Iprops> = ({ children }) => {
 
   const [globalDialogMessage, setGlobalDialogMessage] = useState<globalDialogMessageData>()
 
-  const [chainId, setChainId] = useState<number>(1)
+  // const [chainId, setChainId] = useState<number>(1)
+  const [chainId, setChainId] = useState<number>(97)
   
   const [notification, setNotification] = useState<notificationData[]>([])
 

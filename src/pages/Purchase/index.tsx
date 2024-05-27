@@ -234,9 +234,9 @@ function Purchase() {
   });
 
   const PurchaseView = () => {
-
+    const defaultButtonText = "Connect Wallet"
     const { address } = useAccount()
-    const [buttonText, setButtonText] = useState("Connect Wallet")
+    const [buttonText, setButtonText] = useState(defaultButtonText)
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const [buttonLoading, setButtonLoading] = useState(false)
     const [purchaseStatus, setPurchaseStatus] = useState(0)
@@ -255,6 +255,22 @@ function Purchase() {
       manual: true,
       throttleWait: 1000
     })
+
+    useEffect(() => {
+      if(buttonText === defaultButtonText && address && purchaseStatus === 0){
+        setButtonText("Allowance Approval")
+        setPurchaseStatus(1)
+        setButtonDisabled(false)
+        return
+      }
+      if(!address){
+        setButtonText(defaultButtonText)
+        setPurchaseStatus(0)
+        setButtonDisabled(false)
+        return
+      }
+      // eslint-disable-next-line
+    }, [address, buttonText])
 
     if(configData === undefined){
       return null
