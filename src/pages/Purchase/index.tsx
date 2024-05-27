@@ -245,29 +245,41 @@ function Purchase() {
     const chainId = chain?.id  || 1
     const { configData } = usePageValue()
     const navigate = useNavigate()
+
     const { runAsync: runCreateOrder } = useRequest(createOrder, {
       retryCount: 2,
       manual: true,
       throttleWait: 1000
     })
+
     const { runAsync: runUpdateOrder } = useRequest(updateOrder, {
       retryCount: 2,
       manual: true,
       throttleWait: 1000
     })
 
+    const {data: balanceData, error: balanceError, runAsync: runGetBalance, loading: getBalanceLoading} = useRequest(getBalance, {
+      pollingInterval: 30000,
+      manual: true,
+    })
+
     useEffect(() => {
-      if(buttonText === defaultButtonText && address && purchaseStatus === 0){
-        setButtonText("Allowance Approval")
-        setPurchaseStatus(1)
-        setButtonDisabled(false)
-        return
+      if(address){
+        if(buttonText === defaultButtonText && purchaseStatus === 0){
+          setButtonText("Allowance Approval")
+          setPurchaseStatus(1)
+          setButtonDisabled(false)
+        }
+        const currentChain = chainList.find(val=>val.id === chainId)
+        if(currentChain === undefined){
+          return
+        }
+        runGetBalance(PurchaseConfigOnChain[chainId].tokenAddress, address, currentChain)
       }
       if(!address){
         setButtonText(defaultButtonText)
         setPurchaseStatus(0)
         setButtonDisabled(false)
-        return
       }
       // eslint-disable-next-line
     }, [address, buttonText])
@@ -481,7 +493,10 @@ function Purchase() {
           />
           <div style={{display:'flex', alignItems:'center'}}>USDT</div>
         </div>
-        <div className='purchase-info-area'>
+        <div className='purchase-info-area-top'>
+          <p>Balance&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!getBalanceLoading && balanceData && formatAmount(balanceData.value.toString(), 18)}{!getBalanceLoading && balanceData && BigNumber(formatAmount(balanceData.value.toString(), 18)).lt(configData.priceInUsdt) && <><span className="red-text">&nbsp;&nbsp;&nbsp;Insufficient&nbsp;&nbsp;&nbsp;</span><a href="https://swap.mises.site/" target="_blank" rel="noreferrer">Go to Swap</a></>} {balanceError && `data error`}{getBalanceLoading && <DotLoading color='currentColor'/>}</p>
+        </div>
+        <div className='purchase-info-area-bottom'>
           <p>Duration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+30 day</p>
         </div>
         <Button
