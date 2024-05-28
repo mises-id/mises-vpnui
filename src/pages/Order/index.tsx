@@ -33,9 +33,9 @@ const Order = () => {
         Toast.show("data error")
     }
 
-    if(data?.status && data?.status !== 'Pending'){
-        cancel()
-    }
+    // if(data?.status && data?.status !== 'Pending'){
+    //     cancel()
+    // }
 
     // data = {
     //     orderId: 'cvcvcvcvcvcvcv',
