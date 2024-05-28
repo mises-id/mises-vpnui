@@ -24,7 +24,11 @@ const Order = () => {
     }, [accounts])
 
     // todo:test let
-    const {data, error, cancel, loading: fetchOrderInfoLoading} = useRequest(() => fetchOrderInfo(orderId), {
+    // const {data, error, cancel, loading: fetchOrderInfoLoading} = useRequest(() => fetchOrderInfo(orderId), {
+    //     pollingInterval: 15000
+    // })
+
+    const {data, error, loading: fetchOrderInfoLoading} = useRequest(() => fetchOrderInfo(orderId), {
         pollingInterval: 15000
     })
 
