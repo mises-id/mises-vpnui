@@ -14,7 +14,6 @@ const Orders = () => {
     const navigate = useNavigate()
 
     const currentAccount = useMemo(() => {
-        // return "0x3836f698D4e7d7249cCC3291d9ccd608Ee718988";
         if (accounts?.length) {
           return accounts[0]
         }
@@ -25,38 +24,6 @@ const Orders = () => {
     const {data, error, loading: fetchOrdersLoading} = useRequest(fetchOrders, {
         pollingInterval: 15000
     })
-
-    // data = [
-    //     {
-    //       orderId: "cvcvcvcvcvcvcv",
-    //       status: "pending",
-    //       amount: 3,
-    //       chain: "tron",
-    //       token: "usdt",
-    //       txnHash: "",
-    //       createTime: "2024/04/30"
-    //     },
-    //     {
-    //       orderId: "cvcvcvcvcvcvcv",
-    //       status: "pending",
-    //       amount: 3,
-    //       chain: "tron",
-    //       token: "usdt",
-    //       txnHash: "",
-    //       createTime: "2024/04/30"
-    //     },
-    //     {
-    //       orderId: "cvcvcvcvcvcvcv",
-    //       status: "pending",
-    //       amount: 3,
-    //       chain: "tron",
-    //       token: "usdt",
-    //       txnHash: "",
-    //       createTime: "2024/04/30"
-    //     }
-    // ]
-    // fetchOrdersLoading = true
-    // error = new Error("network error")
 
     if(error) {
         console.log("fetchOrders:", error)

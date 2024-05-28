@@ -15,18 +15,12 @@ const Order = () => {
     const navigate = useNavigate()
 
     const currentAccount = useMemo(() => {
-        // return "0x3836f698D4e7d7249cCC3291d9ccd608Ee718988";
         if (accounts?.length) {
           return accounts[0]
         }
         const connectAddress = localStorage.getItem('ethAccount')
         return connectAddress || ''
     }, [accounts])
-
-    // todo:test let
-    // const {data, error, cancel, loading: fetchOrderInfoLoading} = useRequest(() => fetchOrderInfo(orderId), {
-    //     pollingInterval: 15000
-    // })
 
     const {data, error, cancel, loading: fetchOrderInfoLoading} = useRequest(() => {
         return fetchOrderInfo(orderId)
@@ -44,17 +38,6 @@ const Order = () => {
           cancel()
         }
     }, [data, cancel]);
-
-    // data = {
-    //     orderId: 'cvcvcvcvcvcvcv',
-    //     status: 'Pending',
-    //     // status: 'Paid',
-    //     amount: 3,
-    //     chain: "tron",
-    //     token: "usdt",
-    //     txnHash:"",
-    //     createTime: '2024/04/30'
-    // }
 
     return <>
     <div className='flex justify-between'>

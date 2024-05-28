@@ -8,7 +8,8 @@ export interface configData {
 
 export enum VpnStatus {
   Unavailable = 0,
-  Available
+  Available = 1,
+  Expired = 2
 }
 
 export interface VpnOrder {

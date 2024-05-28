@@ -41,10 +41,7 @@ function Vpninfo() {
     }
   });
 
-  // todo:test
   const currentAccount = useMemo(() => {
-    // return "0x3836f698D4e7d7249cCC3291d9ccd608Ee718988";
-
     if (accounts?.length) {
       return accounts[0]
     }
@@ -59,27 +56,21 @@ function Vpninfo() {
         const address = accounts[0]
         const nonce = `${timestamp}`;
         const sigMsg = `address=${address}&nonce=${timestamp}`
-        // setsignLoadingTrue()
-        // const personalSignMsg = await provider?.send('personal_sign', [address, sigMsg])
         const data = await window.misesEthereum?.signMessageForAuth(address, nonce)
         if (data?.sig) {
           const auth = `${sigMsg}&sig=${data?.sig}`
-          // setsignLoadingFalse()
           return auth
         }
-        // setsignLoadingFalse()
         return Promise.reject({
           code: 9998,
           message: 'Not found personal sign message'
         })
       }
-      // setsignLoadingFalse()
       return Promise.reject({
         code: 9998,
         message: 'Invalid address'
       })
     } catch (error) {
-      // setsignLoadingFalse()
       return Promise.reject(error)
     }
   }
@@ -102,8 +93,6 @@ function Vpninfo() {
   const loginMises = () => {
     const oldConnectAddress = localStorage.getItem('ethAccount')
     if (accounts && accounts.length && oldConnectAddress !== accounts[0]) {
-      // removeToken('token')
-      // localStorage.removeItem('ethAccount')
       signMsg().then(auth => {
         loginMisesAccount({
           auth,
@@ -120,7 +109,6 @@ function Vpninfo() {
   // attempt to connect eagerly on mount
   useEffect(() => {
     metaMask.connectEagerly().catch(() => {
-      // console.log('Failed to connect eagerly to metamask')
     })
     const token = getToken()
     if(token) {
@@ -177,22 +165,13 @@ function Vpninfo() {
     }
 
     return 'Connect Mises ID'
-    //
   }, [isActivating])
   
-  // todo:test let
   const {data: vpnData, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
     if(!currentAccount){
-      // if (vpnInitLoading) {
-      //   setVpnInitLoading(false)
-      // }
       return Promise.reject('please login')
     }
-    const ret = fetchVpnInfo()
-    // if (vpnInitLoading) {
-    //   setVpnInitLoading(false)
-    // }
-    return ret
+    return fetchVpnInfo()
   }, {
     pollingInterval: 15000
   })
@@ -200,7 +179,6 @@ function Vpninfo() {
   useEffect(() => {
     if (fetchVpnInfoError) {
         console.log("fetchVpnInfo:", fetchVpnInfoError);
-        // Toast.show("network error");
     }
   }, [fetchVpnInfoError]);
 
@@ -209,43 +187,6 @@ function Vpninfo() {
         setVpnInitLoading(false)
     }
   }, [fetchVpnInfoLoading, vpnInitLoading]);
-
-  // todo:test
-  // vpnData = {
-  //   status: 0,
-  //   subscription: {
-  //     expireTime: "2024/04/30",
-  //   },
-  //   orders: [
-  //     {
-  //       orderId: "cvcvcvcvcvcvcv",
-  //       status: "pending",
-  //       amount: 3,
-  //       chain: "tron",
-  //       token: "usdt",
-  //       txnHash: "",
-  //       createTime: "2024/04/30"
-  //     },
-  //     {
-  //       orderId: "cvcvcvcvcvcvcv",
-  //       status: "pending",
-  //       amount: 3,
-  //       chain: "tron",
-  //       token: "usdt",
-  //       txnHash: "",
-  //       createTime: "2024/04/30"
-  //     },
-  //     {
-  //       orderId: "cvcvcvcvcvcvcv",
-  //       status: "pending",
-  //       amount: 3,
-  //       chain: "tron",
-  //       token: "usdt",
-  //       txnHash: "",
-  //       createTime: "2024/04/30"
-  //     }
-  //   ]
-  // }
 
   const startVpn = async () => {
     const token = getToken()
@@ -318,7 +259,6 @@ function Vpninfo() {
         {props.fetchVpnInfoLoading && <DotLoading className='vpninfo-loading' color='primary'/>}
         </>
       }else{
-        // return <VpnPay />
         return <>
         <div className='flex justify-between'>
           <p className='p-20 text-16 m-0'><span className='font-bold text-[#5d61ff]'>Mises VPN</span></p>
@@ -343,13 +283,13 @@ function Vpninfo() {
         >
           <div className='plan-content'>
             <p className='text-14 leading-7 tracking-wider'>
-              1. item 1: cccccccccccccccccccccccccccccccc
+              1. vpn介绍文案（待定）
             </p>
             <p className='text-14 leading-7 tracking-wider'>
-              2. item 2: ccccccccccccccccccccccccccccccccc
+              2. vpn介绍文案（待定）
             </p>
             <p className='text-14 leading-7 tracking-wider'>
-              3. item 3: cccccccccccccccccccccccccccccccccc
+              3. vpn介绍文案（待定）
             </p>
           </div>
           <div className='plan-footer-purchase'>
@@ -364,6 +304,9 @@ function Vpninfo() {
             </Button>
           </div>
         </Card>
+        {VpnStatus.Expired === props.vpnData?.status && <Card style={{ textAlign: 'center', color: 'red', borderRadius: '16px', border: '1px solid var(--border-color)', marginTop: "10px" }}>
+          The last subscription has expired.
+        </Card>}
         </div>
         <VpnOrders orders={props.vpnData?.orders}/>
         {props.fetchVpnInfoLoading && <DotLoading className='vpninfo-loading' color='primary'/>}
