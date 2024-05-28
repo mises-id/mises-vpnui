@@ -1,7 +1,7 @@
 import './index.less';
 import { useParams, useNavigate } from 'react-router-dom';
 import { hooks } from '@/components/Web3Provider/metamask';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { shortenAddress } from '@/utils';
 import { fetchOrderInfo } from '@/api';
 import { useRequest } from 'ahooks';
@@ -28,7 +28,9 @@ const Order = () => {
     //     pollingInterval: 15000
     // })
 
-    const {data, error, loading: fetchOrderInfoLoading} = useRequest(() => fetchOrderInfo(orderId), {
+    const {data, error, cancel, loading: fetchOrderInfoLoading} = useRequest(() => {
+        return fetchOrderInfo(orderId)
+    }, {
         pollingInterval: 15000
     })
 
@@ -37,9 +39,11 @@ const Order = () => {
         Toast.show("data error")
     }
 
-    // if(data?.status && data?.status !== 'Pending'){
-    //     cancel()
-    // }
+    useEffect(() => {
+        if (data?.status && data?.status !== 'Pending') {
+          cancel()
+        }
+    }, [data, cancel]);
 
     // data = {
     //     orderId: 'cvcvcvcvcvcvcv',
@@ -51,8 +55,6 @@ const Order = () => {
     //     txnHash:"",
     //     createTime: '2024/04/30'
     // }
-
-    console.log("here")
 
     return <>
     <div className='flex justify-between'>
