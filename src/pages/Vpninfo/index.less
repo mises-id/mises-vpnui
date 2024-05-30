@@ -1,0 +1,66 @@
+@import "../global.less";
+
+@keyframes rotate {
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+
+.loading-icon{
+  animation: 2s linear 0s infinite normal none running rotate;
+  margin: 20px auto;
+  width: 94px;
+  height: 94px;
+}
+
+.task-item{
+  box-shadow: 0 0 5px #ccc;
+}
+
+.purchase-button{
+  font-size: 16px;
+  color: rgb(245, 246, 252);
+  text-align: center;
+  border-radius: 20px;
+  outline: none;
+  border: 1px solid transparent;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  transition: transform 450ms ease 0s;
+  transform: perspective(1px) translateZ(0px);
+  padding: 10px 30px;
+  letter-spacing: 0.05em;
+}
+
+.vpn-button{
+  font-size: 16px;
+  color: rgb(245, 246, 252);
+  text-align: center;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid transparent;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  transition: transform 450ms ease 0s;
+  transform: perspective(1px) translateZ(0px);
+  padding: 10px 20px;
+  flex-grow: 1;
+  letter-spacing: 0.05em;
+}

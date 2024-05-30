@@ -1,0 +1,83 @@
+@media (prefers-color-scheme: dark) {
+    .purchase-content{
+      background: #0d111c;
+      box-shadow: rgba(240, 185, 11, 0.16) 0px 40px 120px 0px;
+    }
+    .switch-token{
+      border: 4px solid rgb(13, 17, 28);
+    }
+}
+  
+@media (prefers-color-scheme: light) {
+    .purchase-content{
+        background: white;
+        box-shadow: rgba(240, 185, 11, 0.16) 0px 40px 120px 0px;
+    }
+    .switch-token{
+        border: 4px solid rgb(255, 255, 255);
+    }
+}
+
+.purchase-content{
+    padding: 20px 15px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+
+@media (prefers-color-scheme: dark) {
+    .purchase-token-area {
+        background-color: rgb(19, 26, 42);
+        color: rgb(152, 161, 192);
+    }
+}
+  
+@media (prefers-color-scheme: light) {
+    .purchase-token-area {
+        background-color: rgb(245, 246, 252);
+        color: rgb(119, 128, 160);
+    }
+}
+
+.purchase-token-area{
+    border-radius: 12px;
+    padding: 10px 15px;
+    border: 0px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+}
+
+.purchase-info-area-top{
+    padding: 20px 15px 0px 15px;
+}
+
+.purchase-info-area-bottom{
+    padding: 20px 15px 10px 15px;
+}
+
+.purchase-button-area{
+    font-size: 20px;
+    font-weight: 600;
+    padding: 12px;
+    color: rgb(245, 246, 252);
+    text-align: center;
+    border-radius: 12px;
+    outline: none;
+    border: 1px solid transparent;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+    transition: transform 450ms ease 0s;
+    transform: perspective(1px) translateZ(0px);
+    margin-top: 12px;
+    width: 100%;
+}
+
+.red-text {
+    color: red;
+}
