@@ -13,6 +13,7 @@ import { okxWallet } from '@/wallets/okxWallet';
 import { phantomWallet } from '@/wallets/phantomWallet';
 import { trustWallet } from '@/wallets/trustWallet';
 import { injectedWallet } from '@/wallets/injectedWallet';
+import { misesWallet } from '@/wallets/misesWallet';
 import { useShowLayout } from '@/hooks/useShowLayout';
 import RetryMaxStatus from '@/components/RetryMaxStatus';
 import ConnectWallet from "@/components/ConnectWallet";
@@ -217,6 +218,7 @@ function Purchase() {
       groupName: 'Recommended',
       wallets: [
         injectedWallet({ chains }),
+        misesWallet({ projectId, chains }),
         metaMaskWallet({ projectId, chains }),
         okxWallet({ projectId, chains }),
         phantomWallet({ projectId, chains }),

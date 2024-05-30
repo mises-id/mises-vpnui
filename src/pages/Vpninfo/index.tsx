@@ -128,12 +128,12 @@ function Vpninfo() {
         return
       }
       setloading(true)
-      window.misesEthereum?.getCachedAuth?.().then(res => {
+      window.misesEthereum?.getCachedAuth?.().then((res:any) => {
         const token = getToken()
         const oldConnectAddress = localStorage.getItem('ethAccount')
         !token && loginMisesAccount(res)
         res.misesId !== oldConnectAddress && token && loginMisesAccount(res)
-      }).catch(err => {
+      }).catch((err:any) => {
         console.log('getCachedAuth error:', err)
         setauthAccount('')
         removeToken('token')
