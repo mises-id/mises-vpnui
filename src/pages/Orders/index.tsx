@@ -72,7 +72,7 @@ const Orders = () => {
             </table>
           </div>
           <div className='plan-footer-order'>
-            <p>If paid, please be patient ...</p>
+            <p style={{textAlign: 'center'}}>If paid, please be patient ...</p>
           </div>
         </Card>
         }
