@@ -53,7 +53,7 @@ const VpnOrders:FC<{orders: VpnOrder[] | undefined}> = ({orders}) => {
             </table>
           </div>
           <div className='plan-footer-order'>
-            <p style={{textAlign: 'center'}}>If paid, please be patient ...</p>
+            <p>If paid, please be patient ...</p>
           </div>
         </Card>
         }
