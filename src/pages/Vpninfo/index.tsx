@@ -167,7 +167,7 @@ function Vpninfo() {
     return 'Connect Mises ID'
   }, [isActivating])
   
-  const {data: vpnData, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
+  const {data: vpnData, run:runFetchVpnInfo, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
     if(!currentAccount){
       return Promise.reject('please login')
     }
@@ -175,6 +175,10 @@ function Vpninfo() {
   }, {
     pollingInterval: 15000
   })
+
+  useEffect(() => {
+    runFetchVpnInfo()
+  }, [currentAccount, runFetchVpnInfo]);
 
   useEffect(() => {
     if (fetchVpnInfoError) {
