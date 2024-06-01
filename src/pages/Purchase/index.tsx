@@ -300,16 +300,16 @@ function Purchase() {
           if(buttonText === defaultButtonText && purchaseStatus === 0){
             // check allowance
             setButtonLoading(true)
+            setButtonDisabled(true)
             const checkAllowanceResult = await runCheckAllowance()
             if(checkAllowanceResult){
               setButtonText("Pay")
               setPurchaseStatus(2)
-              setButtonDisabled(false)
             }else{
               setButtonText("Allowance Approval")
               setPurchaseStatus(1)
-              setButtonDisabled(false)
             }
+            setButtonDisabled(false)
             setButtonLoading(false)
           }
         }
