@@ -249,7 +249,7 @@ function Vpninfo() {
               disabled={props.vpnButtonDisabled}
             >
               {props.vpnLoading && <DotLoading color='currentColor' />}
-              {!props.vpnLoading && `Vpn Panel`}
+              {!props.vpnLoading && `VPN Panel`}
             </Button>
           </div>
         </Card>

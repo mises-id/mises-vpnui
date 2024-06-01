@@ -263,24 +263,62 @@ function Purchase() {
       manual: true,
     })
 
+    const runCheckAllowance = async (): Promise<boolean> => {
+      // current
+      const currentChain = chainList.find(val=>val.id === chainId)
+      try{
+        // check balance
+        const balance = await getBalance(PurchaseConfigOnChain[chainId].tokenAddress, address!, currentChain!)
+        if(BigNumber(formatAmount(balance?.value.toString(), 18)).lt(configData!.priceInUsdt)){
+          return false
+        }
+        // check allowance
+        const data: bigint = await readContract({
+          address: PurchaseConfigOnChain[chainId].tokenAddress,
+          abi: erc20ABI,
+          functionName: 'allowance',
+          args: [address!, PurchaseConfigOnChain[chainId].contractAddress],
+          chainId: chainId,
+        });
+        if(BigNumber(formatAmount(data.toString(), 18)).lt(configData!.priceInUsdt)){
+          return false
+        }
+      } catch (err) {
+        return false
+      }
+      return true
+    }
+
     useEffect(() => {
-      if(address){
-        if(buttonText === defaultButtonText && purchaseStatus === 0){
-          setButtonText("Allowance Approval")
-          setPurchaseStatus(1)
+      (async () => {
+        if(address){
+          const currentChain = chainList.find(val=>val.id === chainId)
+          if(currentChain === undefined){
+            return
+          }
+          runGetBalance(PurchaseConfigOnChain[chainId].tokenAddress, address, currentChain)
+          if(buttonText === defaultButtonText && purchaseStatus === 0){
+            // check allowance
+            setButtonLoading(true)
+            const checkAllowanceResult = await runCheckAllowance()
+            if(checkAllowanceResult){
+              setButtonText("Pay")
+              setPurchaseStatus(2)
+              setButtonDisabled(false)
+            }else{
+              setButtonText("Allowance Approval")
+              setPurchaseStatus(1)
+              setButtonDisabled(false)
+            }
+            setButtonLoading(false)
+          }
+        }
+        if(!address){
+          setButtonText(defaultButtonText)
+          setPurchaseStatus(0)
           setButtonDisabled(false)
         }
-        const currentChain = chainList.find(val=>val.id === chainId)
-        if(currentChain === undefined){
-          return
-        }
-        runGetBalance(PurchaseConfigOnChain[chainId].tokenAddress, address, currentChain)
-      }
-      if(!address){
-        setButtonText(defaultButtonText)
-        setPurchaseStatus(0)
-        setButtonDisabled(false)
-      }
+      })();
       // eslint-disable-next-line
     }, [address, buttonText])
 
