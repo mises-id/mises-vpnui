@@ -25,6 +25,7 @@ function Vpninfo() {
   const [vpnLoading, setVpnLoading] = useState(false)
   const [vpnInitLoading, setVpnInitLoading] = useState(true)
   const [vpnButtonDisabled, setVpnButtonDisabled] = useState(false)
+  const [vpnInfoFirstFetch, setVpnInfoFirstFetch] = useState(false)
 
   const currentAccount = useMemo(() => {
     if (accounts?.length) {
@@ -64,6 +65,7 @@ function Vpninfo() {
         signin(res.auth).then(data => {
           localStorage.setItem('token', data.token);
           runFetchVpnInfo()
+          setVpnInfoFirstFetch(true)
         });
       }).catch(() => {
         console.log('getRemoved')
@@ -109,6 +111,7 @@ function Vpninfo() {
       setToken('token', res.token)
       setloading(false)
       runFetchVpnInfo()
+      setVpnInfoFirstFetch(true)
     } catch (error) {
       setloading(false)
     }
@@ -213,7 +216,7 @@ function Vpninfo() {
     }
   }
 
-  const RenderView = (props:{currentAccount:string, vpnData:any, fetchVpnInfoError: Error | undefined, fetchVpnInfoLoading:boolean, vpnLoading:boolean, vpnButtonDisabled:boolean, vpnInitLoading:boolean}) => {
+  const RenderView = (props:{currentAccount:string, vpnData:any, fetchVpnInfoError: Error | undefined, fetchVpnInfoLoading:boolean, vpnLoading:boolean, vpnButtonDisabled:boolean, vpnInitLoading:boolean, vpnInfoFirstFetch:boolean}) => {
       if(VpnStatus.Available === props.vpnData?.status){
         return <>
         <div className='flex justify-between'>
@@ -224,8 +227,8 @@ function Vpninfo() {
             </div>
           </div>}
         </div>
-        {vpnInitLoading && <AutoCenter><DotLoading color='currentColor' /></AutoCenter>}
-        {!vpnInitLoading && <>
+        {!props.vpnInfoFirstFetch && <AutoCenter><DotLoading color='currentColor' /></AutoCenter>}
+        {props.vpnInfoFirstFetch && <>
         <div className='px-15'>
         {props.vpnData?.subscription && <Card 
           title={
@@ -274,8 +277,8 @@ function Vpninfo() {
             </div>
           </div>}
         </div>
-        {vpnInitLoading && <AutoCenter><DotLoading color='currentColor' /></AutoCenter>}
-        {!vpnInitLoading && <>
+        {props.vpnInitLoading && <AutoCenter><DotLoading color='currentColor' /></AutoCenter>}
+        {!props.vpnInitLoading && <>
         <AutoCenter className='text-18 mb-20 font-bold text-[#5d61ff]'>Plans</AutoCenter>
         <div className='px-15'>
         <Card 
@@ -323,7 +326,7 @@ function Vpninfo() {
 
   return (
     <div className={`h-screen  flex flex-col`}>
-      {currentAccount && <RenderView currentAccount={currentAccount} vpnData={vpnData} fetchVpnInfoError={fetchVpnInfoError} fetchVpnInfoLoading={fetchVpnInfoLoading} vpnLoading={vpnLoading} vpnButtonDisabled={vpnButtonDisabled} vpnInitLoading={vpnInitLoading}/>}
+      {currentAccount && <RenderView currentAccount={currentAccount} vpnData={vpnData} fetchVpnInfoError={fetchVpnInfoError} fetchVpnInfoLoading={fetchVpnInfoLoading} vpnLoading={vpnLoading} vpnButtonDisabled={vpnButtonDisabled} vpnInitLoading={vpnInitLoading} vpnInfoFirstFetch={vpnInfoFirstFetch}/>}
       {!currentAccount && !loading ? <>
         <p className='p-20 text-16 m-0 font-bold text-[#5d61ff] fixed inset-x-0 top-0'>Mises VPN</p>
         <div style={{ minHeight: 160 }}>
