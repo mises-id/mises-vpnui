@@ -227,7 +227,8 @@ function Vpninfo() {
           </div>}
         </div>
         {!props.vpnInfoFirstFetch && <AutoCenter><DotLoading color='currentColor' /></AutoCenter>}
-        {props.vpnInfoFirstFetch && <>
+        {props.vpnInfoFirstFetch && props.fetchVpnInfoError && props.fetchVpnInfoError.message === 'token error' && <AutoCenter><DotLoading color='currentColor' /></AutoCenter>}
+        {props.vpnInfoFirstFetch && (!props.fetchVpnInfoError || props.fetchVpnInfoError.message !== 'token error') && <>
         <div className='px-15'>
         {props.vpnData?.subscription && <Card 
           title={
