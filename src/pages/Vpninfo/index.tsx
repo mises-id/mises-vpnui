@@ -168,9 +168,9 @@ function Vpninfo() {
   }, [isActivating])
   
   const {data: vpnData, run:runFetchVpnInfo, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
-    if(!currentAccount){
-      return Promise.reject('please login')
-    }
+    // if(!currentAccount){
+    //   return Promise.reject('please login')
+    // }
     return fetchVpnInfo()
   }, {
     pollingInterval: 15000
@@ -178,7 +178,7 @@ function Vpninfo() {
 
   useEffect(() => {
     runFetchVpnInfo()
-  }, [currentAccount, runFetchVpnInfo]);
+  }, [accounts, authAccount, currentAccount, runFetchVpnInfo]);
 
   useEffect(() => {
     if (fetchVpnInfoError) {
