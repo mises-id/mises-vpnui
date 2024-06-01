@@ -35,7 +35,7 @@ function Vpninfo() {
     return connectAddress || authAccount || ''
   }, [accounts, authAccount])
 
-  const {data: vpnData, runAsync:runFetchVpnInfo, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
+  const {data: vpnData, run:runFetchVpnInfo, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
     if(!currentAccount){
       return Promise.reject('please login')
     }
@@ -63,9 +63,8 @@ function Vpninfo() {
         console.log('getCachedAuth')
         signin(res.auth).then(data => {
           localStorage.setItem('token', data.token);
-          runFetchVpnInfo().then(() => {
-            setVpnInfoFirstFetch(true)
-          })
+          runFetchVpnInfo()
+          setVpnInfoFirstFetch(true)
         });
       }).catch(() => {
         console.log('getRemoved')
@@ -110,9 +109,8 @@ function Vpninfo() {
       const res = await signin(params.auth)
       setToken('token', res.token)
       setloading(false)
-      runFetchVpnInfo().then(() => {
-        setVpnInfoFirstFetch(true)
-      })
+      runFetchVpnInfo()
+      setVpnInfoFirstFetch(true)
     } catch (error) {
       setloading(false)
     }
