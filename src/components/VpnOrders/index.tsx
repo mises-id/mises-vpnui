@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Card } from "antd-mobile";
 import { FC } from "react"; 
 import { VpnOrder } from "@/api";
+import { shortenAddress } from "@/utils";
 
 const VpnOrders:FC<{orders: VpnOrder[] | undefined}> = ({orders}) => {
     return (
@@ -39,7 +40,7 @@ const VpnOrders:FC<{orders: VpnOrder[] | undefined}> = ({orders}) => {
                       if(i < 5){ 
                       return (
                         <tr key={i}>
-                        <td><Link to={`/vpn/order/${object.orderId}`}>{object.orderId}</Link></td>
+                        <td><Link to={`/vpn/order/${object.orderId}`}>{shortenAddress(object.orderId)}</Link></td>
                         <td>{object.status}</td>
                         <td>{object.amount} {object.token}</td>
                         <td>{object.createTime}</td>

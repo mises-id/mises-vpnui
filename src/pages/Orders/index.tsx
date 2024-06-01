@@ -61,7 +61,7 @@ const Orders = () => {
                   {
                     data.map((object, i) => 
                         <tr>
-                        <td><Link to={`/vpn/order/${object.orderId}`}>{object.orderId}</Link></td>
+                        <td><Link to={`/vpn/order/${object.orderId}`}>{shortenAddress(object.orderId)}</Link></td>
                         <td>{object.status}</td>
                         <td>{object.amount} {object.token}</td>
                         <td>{object.createTime}</td>
