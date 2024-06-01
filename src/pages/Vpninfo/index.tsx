@@ -224,6 +224,8 @@ function Vpninfo() {
             </div>
           </div>}
         </div>
+        {vpnInitLoading && <AutoCenter><DotLoading color='currentColor' /></AutoCenter>}
+        {!vpnInitLoading && <>
         <div className='px-15'>
         {props.vpnData?.subscription && <Card 
           title={
@@ -260,6 +262,7 @@ function Vpninfo() {
         </div>
         <VpnOrders orders={props.vpnData?.orders}/>
         {props.fetchVpnInfoLoading && <DotLoading className='vpninfo-loading' color='primary'/>}
+        </>}
         </>
       }else{
         return <>
