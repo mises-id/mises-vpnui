@@ -26,21 +26,6 @@ function Vpninfo() {
   const [vpnInitLoading, setVpnInitLoading] = useState(true)
   const [vpnButtonDisabled, setVpnButtonDisabled] = useState(false)
 
-  useMount(() => {
-    const provider = (window as any).misesEthereum;
-    if(provider) {
-      provider.getCachedAuth?.().then((res: {auth: string}) => {
-        console.log('getCachedAuth')
-        signin(res.auth).then(data => {
-          localStorage.setItem('token', data.token);
-        });
-      }).catch(() => {
-        console.log('getRemoved')
-        localStorage.removeItem('token');
-      })
-    }
-  });
-
   const currentAccount = useMemo(() => {
     if (accounts?.length) {
       return accounts[0]
@@ -48,6 +33,44 @@ function Vpninfo() {
     const connectAddress = localStorage.getItem('ethAccount')
     return connectAddress || authAccount || ''
   }, [accounts, authAccount])
+
+  const {data: vpnData, run:runFetchVpnInfo, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
+    if(!currentAccount){
+      return Promise.reject('please login')
+    }
+    return fetchVpnInfo()
+  }, {
+    pollingInterval: 15000,
+    manual: true
+  })
+
+  useEffect(() => {
+    if (fetchVpnInfoError) {
+        console.log("fetchVpnInfo:", fetchVpnInfoError);
+    }
+  }, [fetchVpnInfoError]);
+
+  useEffect(() => {
+    if (!fetchVpnInfoLoading && vpnInitLoading) {
+        setVpnInitLoading(false)
+    }
+  }, [fetchVpnInfoLoading, vpnInitLoading]);
+
+  useMount(() => {
+    const provider = (window as any).misesEthereum;
+    if(provider) {
+      provider.getCachedAuth?.().then((res: {auth: string}) => {
+        console.log('getCachedAuth')
+        signin(res.auth).then(data => {
+          localStorage.setItem('token', data.token);
+          runFetchVpnInfo()
+        });
+      }).catch(() => {
+        console.log('getRemoved')
+        localStorage.removeItem('token');
+      })
+    }
+  });
 
   const signMsg = async () => {
     try {
@@ -85,6 +108,7 @@ function Vpninfo() {
       const res = await signin(params.auth)
       setToken('token', res.token)
       setloading(false)
+      runFetchVpnInfo()
     } catch (error) {
       setloading(false)
     }
@@ -166,28 +190,6 @@ function Vpninfo() {
 
     return 'Connect Mises ID'
   }, [isActivating])
-  
-  const {data: vpnData, run: runFetchVpnInfo, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(fetchVpnInfo, {
-    pollingInterval: 15000
-  })
-
-  useEffect(() => {
-    if(currentAccount){
-      runFetchVpnInfo()
-    }
-  }, [accounts, authAccount, currentAccount, runFetchVpnInfo]);
-
-  useEffect(() => {
-    if (fetchVpnInfoError) {
-        console.log("fetchVpnInfo:", fetchVpnInfoError);
-    }
-  }, [fetchVpnInfoError]);
-
-  useEffect(() => {
-    if (!fetchVpnInfoLoading && vpnInitLoading) {
-        setVpnInitLoading(false)
-    }
-  }, [fetchVpnInfoLoading, vpnInitLoading]);
 
   const startVpn = async () => {
     const token = getToken()
