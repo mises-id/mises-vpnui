@@ -35,11 +35,11 @@ function Vpninfo() {
     return connectAddress || authAccount || ''
   }, [accounts, authAccount])
 
-  const {data: vpnData, run:runFetchVpnInfo, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(() => {
+  const {data: vpnData, run:runFetchVpnInfo, error: fetchVpnInfoError, loading: fetchVpnInfoLoading} = useRequest(async () => {
     if(!currentAccount){
       return Promise.reject('please login')
     }
-    return fetchVpnInfo()
+    return await fetchVpnInfo()
   }, {
     pollingInterval: 15000
   })
