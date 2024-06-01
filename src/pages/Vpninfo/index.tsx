@@ -41,8 +41,7 @@ function Vpninfo() {
     }
     return fetchVpnInfo()
   }, {
-    pollingInterval: 15000,
-    manual: true
+    pollingInterval: 15000
   })
 
   useEffect(() => {
