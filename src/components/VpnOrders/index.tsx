@@ -43,7 +43,7 @@ const VpnOrders:FC<{orders: VpnOrder[] | undefined}> = ({orders}) => {
                         <td><Link to={`/vpn/order/${object.orderId}`}>{shortenAddress(object.orderId)}</Link></td>
                         <td>{object.status}</td>
                         <td>{object.amount} {object.token}</td>
-                        <td>{object.createTime}</td>
+                        <td style={{width: '25%'}}>{object.createTime}</td>
                         </tr>
                       )}else{
                         return null
