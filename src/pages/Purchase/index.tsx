@@ -9,6 +9,7 @@ import { erc20ABI, readContract, prepareWriteContract, writeContract } from '@wa
 import { publicProvider } from 'wagmi/providers/public';
 import { bitkeepWallet } from '@/wallets/bitkeepWallet';
 import { metaMaskWallet } from '@/wallets/metamask';
+import { misesWallet } from '@/wallets/misesWallet';
 import { okxWallet } from '@/wallets/okxWallet';
 import { phantomWallet } from '@/wallets/phantomWallet';
 import { trustWallet } from '@/wallets/trustWallet';
@@ -217,6 +218,7 @@ function Purchase() {
       groupName: 'Recommended',
       wallets: [
         injectedWallet({ chains }),
+        misesWallet({ projectId, chains }),
         metaMaskWallet({ projectId, chains }),
         okxWallet({ projectId, chains }),
         phantomWallet({ projectId, chains }),
