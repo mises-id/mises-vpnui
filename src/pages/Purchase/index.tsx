@@ -421,6 +421,15 @@ function Purchase() {
                 hash: hash
               })
               console.log(`Approve Transaction status: ${status}`);
+              if(status !== "success"){
+                Toast.show({
+                  content: "approve allowance error",
+                  maskClickable: false,
+                  duration: 2000
+                })
+                setButtonLoading(false)
+                return
+              }
             }
 
             // update button status
