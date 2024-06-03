@@ -5,7 +5,7 @@ import enUS from 'antd-mobile/es/locales/en-US'
 import '@rainbow-me/rainbowkit/styles.css';
 import { ConnectButton, RainbowKitProvider, connectorsForWallets, useConnectModal } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig, useAccount, useNetwork } from 'wagmi';
-import { erc20ABI, readContract, prepareWriteContract, writeContract } from '@wagmi/core';
+import { erc20ABI, readContract, prepareWriteContract, writeContract, waitForTransaction } from '@wagmi/core';
 import { publicProvider } from 'wagmi/providers/public';
 import { bitkeepWallet } from '@/wallets/bitkeepWallet';
 import { metaMaskWallet } from '@/wallets/metamask';
@@ -414,9 +414,13 @@ function Purchase() {
                 ],
                 chainId: chainId,
               });
-              await writeContract(request);
-              // const { hash } = await writeContract(request);
-              // console.log(`Approve Transaction hash: ${hash}`);
+              const { hash } = await writeContract(request);
+              console.log(`Approve Transaction hash: ${hash}`);
+              const { status } = await waitForTransaction({
+                chainId: chainId,
+                hash: hash
+              })
+              console.log(`Approve Transaction status: ${status}`);
             }
 
             // update button status
