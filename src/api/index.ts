@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 import { getToken } from '@/utils'
 
-// todo:?
 export interface configData {
   priceInUsdt: number
+  strContractABI: string
+  purchaseConfigOnChain: {[key:number]:{tokenAddress:address, contractAddress:address}}
 }
 
 export enum VpnStatus {
@@ -40,8 +41,7 @@ export async function fetchConfigData(): Promise<configData> {
     })
     return data
   } catch (error) {
-    // todo:test default
-    return {priceInUsdt: 3.00}
+    return Promise.reject("config error")
   }
 }
 

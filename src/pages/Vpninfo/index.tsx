@@ -28,6 +28,9 @@ function Vpninfo() {
   const [vpnInfoFirstFetch, setVpnInfoFirstFetch] = useState(false)
 
   const currentAccount = useMemo(() => {
+    if(authAccount !== ""){
+      return authAccount
+    }
     if (accounts?.length) {
       return accounts[0]
     }
@@ -126,7 +129,8 @@ function Vpninfo() {
         })
       }).catch(error => {
         if(error && error.message) {
-          Toast.show(error.message)
+          // Toast.show(error.message)
+          console.log(error.message)
         }
       })
     }

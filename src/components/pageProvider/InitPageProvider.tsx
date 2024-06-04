@@ -1,14 +1,21 @@
 import React, { PropsWithChildren } from 'react';
 import { PageValueProvider } from '.';
-// import { useRequest } from 'ahooks'
-// import { fetchConfigData } from '@/api'
+import { useRequest } from 'ahooks';
+import { fetchConfigData } from '@/api';
+import { Toast } from 'antd-mobile';
 
 const InitPageProvider = ({ children }: PropsWithChildren<{}>) => {
-  // const { data: configData } = useRequest(fetchConfigData, {
-  //   retryCount: 3
-  // })
+  const { data: configData, error: configDataError } = useRequest(fetchConfigData, {
+    retryCount: 3
+  })
 
-  const configData = {priceInUsdt: 3.00}
+  if(configDataError){
+    Toast.show({
+      content: "config error",
+      maskClickable: false,
+      duration: 2000
+    })
+  }
 
   return (
     <PageValueProvider value={{

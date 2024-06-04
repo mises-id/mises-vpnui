@@ -28,159 +28,159 @@ import { useRequest } from 'ahooks';
 import { createOrder, updateOrder } from '@/api';
 import { useNavigate } from 'react-router-dom';
 
-const contractABI = [
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "initialOwner",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnableInvalidOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "OwnableUnauthorizedAccount",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      }
-    ],
-    "name": "getTokenBalance",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "uniqueKey",
-        "type": "string"
-      }
-    ],
-    "name": "receiveTokens",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      }
-    ],
-    "name": "withdrawToken",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
-]
+// const contractABI = [
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "initialOwner",
+//         "type": "address"
+//       }
+//     ],
+//     "stateMutability": "nonpayable",
+//     "type": "constructor"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "owner",
+//         "type": "address"
+//       }
+//     ],
+//     "name": "OwnableInvalidOwner",
+//     "type": "error"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "account",
+//         "type": "address"
+//       }
+//     ],
+//     "name": "OwnableUnauthorizedAccount",
+//     "type": "error"
+//   },
+//   {
+//     "anonymous": false,
+//     "inputs": [
+//       {
+//         "indexed": true,
+//         "internalType": "address",
+//         "name": "previousOwner",
+//         "type": "address"
+//       },
+//       {
+//         "indexed": true,
+//         "internalType": "address",
+//         "name": "newOwner",
+//         "type": "address"
+//       }
+//     ],
+//     "name": "OwnershipTransferred",
+//     "type": "event"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "tokenAddress",
+//         "type": "address"
+//       }
+//     ],
+//     "name": "getTokenBalance",
+//     "outputs": [
+//       {
+//         "internalType": "uint256",
+//         "name": "",
+//         "type": "uint256"
+//       }
+//     ],
+//     "stateMutability": "view",
+//     "type": "function"
+//   },
+//   {
+//     "inputs": [],
+//     "name": "owner",
+//     "outputs": [
+//       {
+//         "internalType": "address",
+//         "name": "",
+//         "type": "address"
+//       }
+//     ],
+//     "stateMutability": "view",
+//     "type": "function"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "tokenAddress",
+//         "type": "address"
+//       },
+//       {
+//         "internalType": "uint256",
+//         "name": "amount",
+//         "type": "uint256"
+//       },
+//       {
+//         "internalType": "string",
+//         "name": "uniqueKey",
+//         "type": "string"
+//       }
+//     ],
+//     "name": "receiveTokens",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+//   },
+//   {
+//     "inputs": [],
+//     "name": "renounceOwnership",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "newOwner",
+//         "type": "address"
+//       }
+//     ],
+//     "name": "transferOwnership",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+//   },
+//   {
+//     "inputs": [
+//       {
+//         "internalType": "address",
+//         "name": "tokenAddress",
+//         "type": "address"
+//       }
+//     ],
+//     "name": "withdrawToken",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+//   }
+// ]
 
-const PurchaseConfigOnChain: {[key:number]:{tokenAddress:address, contractAddress:address}} = {
-  // bsc testnet
-  97: {
-    // usdt
-    // tokenAddress: '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
-    tokenAddress: '0x7ce794304CBc54c3DeeA8Afa175F5B2458dDE460',
-    // receiver contract
-    contractAddress: '0xc41Bfd2df09190C7416f21369aF61bE270128Dcb',
-  },
-}
+// const PurchaseConfigOnChain: {[key:number]:{tokenAddress:address, contractAddress:address}} = {
+//   // bsc testnet
+//   97: {
+//     // usdt
+//     // tokenAddress: '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
+//     tokenAddress: '0x7ce794304CBc54c3DeeA8Afa175F5B2458dDE460',
+//     // receiver contract
+//     contractAddress: '0xc41Bfd2df09190C7416f21369aF61bE270128Dcb',
+//   },
+// }
 
 function Purchase() {
   const { isShowLayout, isMaxRetryStatus, getProvider } = useShowLayout()
@@ -265,40 +265,17 @@ function Purchase() {
       manual: true,
     })
 
-    const runCheckAllowance = async (): Promise<boolean> => {
-      // current
-      const currentChain = chainList.find(val=>val.id === chainId)
-      try{
-        // check balance
-        const balance = await getBalance(PurchaseConfigOnChain[chainId].tokenAddress, address!, currentChain!)
-        if(BigNumber(formatAmount(balance?.value.toString(), 18)).lt(configData!.priceInUsdt)){
-          return false
-        }
-        // check allowance
-        const data: bigint = await readContract({
-          address: PurchaseConfigOnChain[chainId].tokenAddress,
-          abi: erc20ABI,
-          functionName: 'allowance',
-          args: [address!, PurchaseConfigOnChain[chainId].contractAddress],
-          chainId: chainId,
-        });
-        if(BigNumber(formatAmount(data.toString(), 18)).lt(configData!.priceInUsdt)){
-          return false
-        }
-      } catch (err) {
-        return false
-      }
-      return true
-    }
-
     useEffect(() => {
       (async () => {
+        if(configData === undefined) {
+          return
+        }
         if(address){
           const currentChain = chainList.find(val=>val.id === chainId)
           if(currentChain === undefined){
             return
           }
-          runGetBalance(PurchaseConfigOnChain[chainId].tokenAddress, address, currentChain)
+          runGetBalance(configData.purchaseConfigOnChain[chainId].tokenAddress, address, currentChain)
           if(buttonText === defaultButtonText && purchaseStatus === 0){
             // check allowance
             setButtonLoading(true)
@@ -328,13 +305,39 @@ function Purchase() {
       return null
     }
 
+    const runCheckAllowance = async (): Promise<boolean> => {
+      // current
+      const currentChain = chainList.find(val=>val.id === chainId)
+      try{
+        // check balance
+        const balance = await getBalance(configData.purchaseConfigOnChain[chainId].tokenAddress, address!, currentChain!)
+        if(BigNumber(formatAmount(balance?.value.toString(), 18)).lt(configData!.priceInUsdt)){
+          return false
+        }
+        // check allowance
+        const data: bigint = await readContract({
+          address: configData.purchaseConfigOnChain[chainId].tokenAddress,
+          abi: erc20ABI,
+          functionName: 'allowance',
+          args: [address!, configData.purchaseConfigOnChain[chainId].contractAddress],
+          chainId: chainId,
+        });
+        if(BigNumber(formatAmount(data.toString(), 18)).lt(configData!.priceInUsdt)){
+          return false
+        }
+      } catch (err) {
+        return false
+      }
+      return true
+    }
+
     const onButtonClick = async () => {
       if(!address){
         openConnectModal?.()
         return
       }
 
-      if(!(chainId in PurchaseConfigOnChain)){
+      if(!(chainId in configData.purchaseConfigOnChain)){
         Toast.show({
           content: "This chain is not supported",
           maskClickable: false,
@@ -380,7 +383,7 @@ function Purchase() {
             setButtonLoading(true)
 
             // check balance
-            const balance = await getBalance(PurchaseConfigOnChain[chainId].tokenAddress, address, currentChain)
+            const balance = await getBalance(configData.purchaseConfigOnChain[chainId].tokenAddress, address, currentChain)
             if(BigNumber(formatAmount(balance?.value.toString(), 18)).lt(configData.priceInUsdt)){
               Toast.show({
                 content: "Insufficient Balance",
@@ -393,10 +396,10 @@ function Purchase() {
             
             // check allowance
             const data: bigint = await readContract({
-              address: PurchaseConfigOnChain[chainId].tokenAddress,
+              address: configData.purchaseConfigOnChain[chainId].tokenAddress,
               abi: erc20ABI,
               functionName: 'allowance',
-              args: [address, PurchaseConfigOnChain[chainId].contractAddress],
+              args: [address, configData.purchaseConfigOnChain[chainId].contractAddress],
               chainId: chainId,
             });
 
@@ -405,11 +408,11 @@ function Purchase() {
             if(BigNumber(formatAmount(data.toString(), 18)).lt(configData.priceInUsdt)){
               // approve allowance
               const { request } = await prepareWriteContract({
-                address: PurchaseConfigOnChain[chainId].tokenAddress,
+                address: configData.purchaseConfigOnChain[chainId].tokenAddress,
                 abi: erc20ABI,
                 functionName: 'approve',
                 args: [
-                  PurchaseConfigOnChain[chainId].contractAddress,
+                  configData.purchaseConfigOnChain[chainId].contractAddress,
                   BigInt(configData.priceInUsdt * 10 ** 18)
                 ],
                 chainId: chainId,
@@ -476,12 +479,13 @@ function Purchase() {
             }else{
               throw new Error("empty order id")
             }
+            const contractABI = JSON.parse(configData.strContractABI)
             const { request } = await prepareWriteContract({
-              address: PurchaseConfigOnChain[chainId].contractAddress,
+              address: configData.purchaseConfigOnChain[chainId].contractAddress,
               abi: contractABI,
               functionName: 'receiveTokens',
               args: [
-                PurchaseConfigOnChain[chainId].tokenAddress,
+                configData.purchaseConfigOnChain[chainId].tokenAddress,
                 BigInt(configData.priceInUsdt * 10 ** 18),
                 orderId
               ],
